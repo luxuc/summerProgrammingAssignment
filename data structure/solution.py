@@ -22,19 +22,9 @@ def merge(intervals):
     for i in range(len(intervals)-1):
         if intervals[i].end >= intervals[i+1].start:    # need to merge
             
-            #---------------
-            #print ("start: %d end: %d" %(intervals[i+1].start, intervals[i+1].end))
-            #print ("start: %d end: %d" %(intervals_cp[i+1].start, intervals_cp[i+1].end))
-            #print "cost0: %d" %intervals_cp[i+1].cost
-            #---------------
-            
             # modify costs
             help_cover = min(intervals[i].end, intervals[i+1].end) - intervals[i+1].start
             intervals_cp[i+1].cost -= help_cover
-            
-            #---------------
-            #print "cost1: %d" %intervals_cp[i+1].cost
-            #---------------
 
             # merge intervals
             intervals[i + 1].start = intervals[i].start
@@ -47,25 +37,17 @@ def merge(intervals):
             merged_intervals.append(ele)   
     
     intervals_cp.sort(key=lambda x: x.end, reverse=True)
+    
     # sort from latest end to earliest end
     for i in range(len(intervals_cp) - 1):
         if intervals_cp[i].start <= intervals_cp[i + 1].end:  # need to merge
             # modify costs
             help_cover = intervals_cp[i+1].end - max(intervals_cp[i+1].start, intervals_cp[i].start)
             
-            #---------------
-            #print ("start: %d end: %d" %(intervals_cp[i+1].start, intervals_cp[i+1].end))            
-            #print "cost3: %d" %intervals_cp[i+1].cost
-            #---------------
-            
             intervals_cp[i+1].cost -= help_cover
             intervals_cp[i+1].cost = max(intervals_cp[i + 1].cost, 0)
             if intervals_cp[i+1].cost == 0:
                 return addHours(merged_intervals)
-            
-            #---------------
-            #print "cost4: %d" %intervals_cp[i+1].cost
-            #---------------
 
             # merge intervals
             intervals_cp[i + 1].start = min(intervals_cp[i+1].start, intervals_cp[i].start)
